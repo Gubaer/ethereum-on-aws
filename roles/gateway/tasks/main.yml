@@ -1,0 +1,7 @@
+#
+# tasks for the boostrap node
+#
+
+- name: set node name
+  hostname: name=aws-chain-gateway
+  become: true

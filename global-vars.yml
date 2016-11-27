@@ -1,0 +1,31 @@
+#
+# global variables for the private ethereum network
+#
+# number of mininig nodes to be launched
+num_mining_nodes: 2
+# the network id (a random number created using random.org)
+network_id: 90972514
+# the directory where geth saves data for the chain on an ethereum node
+geth_data_dir: /home/ubuntu/data
+
+#
+# Amazon Web Service specific parameters 
+aws_parameters:
+    # the name of the AWS key pair which is used to access the chain nodes
+    # using ssh
+    #
+    # You have to create this key in the AWS management console. The public
+    # key file (a .pem file) has to be downloaded from there and installed on 
+    # the host where ansible-playbook is run. 
+    # The full path to the key file has to be configured in 'ansible.cfg'.
+    #    private_key_file=/path/to/public/key/file.pem
+    key_name: ethereum
+    # the aws region where the ethereum chain is provisioned
+    region: eu-west-1
+    # the type of EC2 instance to be provisioned in AWS. See 
+    # https://aws.amazon.com/de/ec2/instance-types/
+    # for more instances
+    instance_type: m3.large
+    # the image to be used for the EC2 instance. 
+    # ami-0d77397e is an Ubuntu 16.04 image
+    image: ami-0d77397e

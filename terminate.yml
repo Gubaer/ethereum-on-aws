@@ -1,0 +1,27 @@
+#
+# terminate the ethereum chain
+#
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  
+  tasks:
+    - name: Terminate aws-chain instances
+      local_action:
+        module: ec2
+        state: absent
+        region: eu-west-1
+        instance_ids: "{{ hostvars[item]['ec2_id'] }}"
+        wait: true
+      with_items: 
+        - "{{ groups['tag_aws_chain_node_true'] | default([]) }}"
+
+    - name: Remove security group
+      local_action:
+        module: ec2_group
+        region: eu-west-1
+        name: ethereum
+        description: ''
+        state: absent
+
+        

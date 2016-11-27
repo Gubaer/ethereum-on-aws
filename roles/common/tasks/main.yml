@@ -1,0 +1,29 @@
+
+#
+# common tasks on ethereum nodes
+#
+
+- name: add ethereum apt repository
+  become: true
+  apt_repository: repo="ppa:ethereum/ethereum" state=present
+
+- name: install ethereum apt package 
+  become: true
+  apt:
+    name: ethereum
+    update_cache: yes
+
+- name: copy genesis JSON
+  copy: src=genesis.json dest=/home/ubuntu/genesis.json
+
+- name: create geth data directory
+  file: path="{{ geth_data_dir }}" state=directory
+
+- name: init chain
+  shell: geth --datadir {{ geth_data_dir }} init genesis.json
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+#
+#  tasks for mining nodes
+# 
+
+- name: set hostname 
+  # TODO: should also add an entry in /etc/hosts, otherwise sudo reports that it can't
+  # resolve the host name
+  hostname: name="aws-chain-mining-node-{{ groups.tag_aws_chain_mining_node_true.index(inventory_hostname) }}"
+  become: true
+
+- name: create a miner account
+  vars:
+    password_file: /home/ubuntu/miner-password
+  # 'miner' is the password for the created mining account. Shouldn't be included
+  # in the playbook for a *real* ethereum chain, obviously.
+  shell: | 
+    echo miner > {{ password_file }} 
+    geth --datadir {{ geth_data_dir }}  --password {{ password_file }} account new
+    rm {{ password_file }} 
+
+- name: install the geth wrapper for mining
+  vars:
+    # TODO: temporary, replace with account address of the miner
+    geth_etherbase: 111222333
+  template: 
+    src: geth.sh.j2
+    dest: /home/ubuntu/geth.sh
+    mode: "u=rwx,g=r,o=r"
+
+# geth the mining account  
+# sudo geth --datadir /home/ubuntu/data account list | grep "Account #0" | sed -n 's/.*--\([0-9a-f]\+\)$/\1/p'

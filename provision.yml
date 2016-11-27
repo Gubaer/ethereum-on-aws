@@ -1,0 +1,140 @@
+
+#
+# ansible playbook to setup an ethereum network in the AWS cloud
+#
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files: 
+    - global-vars.yml
+
+  tasks:
+    - name: create security group
+      local_action:
+        module: ec2_group
+        name: ethereum
+        description: Security group for aws chain
+        region: eu-west-1
+        state: present
+        rules:
+          # allow SSH from anywhere
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          # where the geth rpc is exposed
+          - proto: tcp
+            from_port: 8000
+            to_port: 8000
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          # allow for outbound http
+          - proto: tcp
+            from_port: 80  
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          # allow for outbound https
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+      register: security_group
+
+    - name: launch mining nodes
+      local_action:
+        module: ec2
+        key_name: "{{ aws_parameters.key_name }}"
+        region: "{{ aws_parameters.region }}"
+        instance_type: "{{ aws_parameters.instance_type }}"
+        image: "{{ aws_parameters.image }}"
+        group_id: "{{ security_group['group_id'] }}"
+        wait: true
+        exact_count: "{{ num_mining_nodes }}"
+        count_tag:
+          "aws-chain-mining-node": "true"
+        instance_tags:
+          "aws-chain-mining-node": "true"
+          "aws-chain-node" : "true"
+        volumes: 
+          - device_name: /dev/sda1
+            device_type: gp2
+            volume_size: 40
+            delete_on_termination: true
+
+    - name: Launch  gateway node
+      local_action:
+        module: ec2
+        key_name: "{{ aws_parameters.key_name }}"
+        region: "{{ aws_parameters.region }}"
+        instance_type: "{{ aws_parameters.instance_type }}"
+        image: "{{ aws_parameters.image }}"
+        group_id: "{{ security_group['group_id'] }}"
+        wait: true
+        exact_count: 1
+        count_tag:
+          "aws-chain-gateway-node": "true"          
+        instance_tags:
+          "aws-chain-gateway-node": "true"
+          "aws-chain-node" : "true"
+          Name: "aws-chain Gateway Node"
+        volumes: 
+          - device_name: /dev/sda1
+            device_type: gp2
+            volume_size: 40
+            delete_on_termination: true
+      
+    - name: Refresh EC2 cache
+      command: ./ec2.py --refresh-cache
+
+    - name: Refresh in-memory EC2 cache
+      meta: refresh_inventory
+
+    - name: Name mining nodes
+      local_action:
+        region: eu-west-1
+        module: ec2_tag
+        resource: "{{ hostvars[item.1]['ec2_id'] }}"
+        tags:
+          Name: "aws-chain Mining Node {{ item.0 }}"
+      with_indexed_items: "{{ groups.tag_aws_chain_mining_node_true }}"
+
+- name: Wait for ssh on all aws chain nodes
+  hosts: tag_aws_chain_node_true
+  gather_facts: false  # no ssh connection yet
+  tasks: 
+    - local_action:  wait_for host={{ inventory_hostname }} port=22 delay=10 timeout=320 state=started
+    
+- name: configure all nodes
+  hosts: tag_aws_chain_node_true
+  gather_facts: false  # python not installed yet, can't gather facts
+  vars_files: 
+    - global-vars.yml
+
+  tasks:
+    - name: install python2
+      # can't use module 'apt' or 'shell' - have to install python first
+      raw: sudo apt-get update && sudo apt-get -y install python-simplejson
+
+- name: configure all nodes
+  hosts: tag_aws_chain_node_true
+  gather_facts: false  # python not installed yet
+  vars_files: 
+    - global-vars.yml
+  roles:
+    - common
+  
+- name: configure gateway nodes
+  hosts: tag_aws_chain_gateway_node_true
+  vars_files: 
+    - global-vars.yml
+  roles:
+    - gateway
+  
+- name: configure mining nodes
+  hosts: tag_aws_chain_mining_node_true
+  vars_files: 
+    - global-vars.yml
+  roles:
+    - mining
+
