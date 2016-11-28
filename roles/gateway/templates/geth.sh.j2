@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#
+# start a geth instance for the gatway node
+#
+
+geth --identity "{{ ansible_hostname }}" \
+	--rpc \
+	--rpcport 8000 \
+	--datadir {{ geth_data_dir }} \
+	--port "30303" \
+	--nodiscover \
+	--ipcpath {{ geth_data_dir }}/aws-chain.ipc \
+	--ipcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
+	--networkid {{ network_id }} \
+	--nat "any" \
+	$*

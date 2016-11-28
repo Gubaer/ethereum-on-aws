@@ -5,3 +5,9 @@
 - name: set node name
   hostname: name=aws-chain-gateway
   become: true
+
+- name: install the geth wrapper for the gateway node
+  template: 
+    src: geth.sh.j2
+    dest: /home/ubuntu/geth.sh
+    mode: "u=rwx,g=r,o=r"
