@@ -4,6 +4,7 @@
 #
 
 geth --identity "{{ ansible_hostname }}" \
+	--ipcpath {{ geth_data_dir }}/aws-chain.ipc
 	--rpc \
 	--rpcport "8000" \
 	--rpccorsdomain "*" \
