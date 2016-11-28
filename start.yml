@@ -1,0 +1,20 @@
+#
+# start the ethereum network
+#
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files: 
+    - global-vars.yml
+  
+  tasks:
+    - name: start aws-chain instances
+      local_action:
+        module: ec2
+        state: running
+        region: "{{ aws_parameters.region }}"
+        instance_ids: "{{ hostvars[item]['ec2_id'] }}"
+        wait: true
+      with_items: 
+        - "{{ groups['tag_aws_chain_node_true'] | default([]) }}"
