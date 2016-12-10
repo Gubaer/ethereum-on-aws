@@ -6,7 +6,7 @@
 # the local IP4 address of the EC2 instance. Used below as
 # rcpaddr when launching geth. If --rcpaddr was missing from the 
 # command line, geth would be started on 'localhost' and port 8000
-# could not be accessed from the outsite.
+# could not be accessed from the outside.
 #
 LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
