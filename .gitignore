@@ -1,2 +1,3 @@
 *.retry
 *.pem
+ansible.cfg
