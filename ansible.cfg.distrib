@@ -1,0 +1,23 @@
+[defaults]
+
+###
+### configure this!
+###
+# the private key for ssh-connection to the aws nodes
+private_key_file=/full/path/to/the-private-ssh-key.pem
+
+
+###
+### usually no need to configure the entries below
+###
+
+# the inventory for Amazon Web Services. The python script is
+# part of the github repo, you should have to download and install
+# it. 
+inventory=ec2.py
+
+# the user to to connect to the etherum nodes via ssh.
+remote_user=ubuntu
+
+# ansible not to check hosts when connecting via ssh
+host_key_checking=False
