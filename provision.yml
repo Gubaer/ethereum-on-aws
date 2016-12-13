@@ -13,9 +13,18 @@
     - name: create security group
       local_action:
         module: ec2_group
-        name: ethereum
+        name: "{{ aws_parameters.security_group_name }}"
         description: Security group for aws chain
-        region: eu-west-1
+        region: "{{ aws_parameters.region }}"
+        state: present
+      register: security_group
+
+    - name: define rules in security group
+      local_action:
+        module: ec2_group
+        name: "{{ aws_parameters.security_group_name }}"
+        description: Security group for aws chain
+        region: "{{ aws_parameters.region }}"
         state: present
         rules:
           # allow SSH from anywhere
@@ -28,6 +37,13 @@
             from_port: 8000
             to_port: 8000
             cidr_ip: 0.0.0.0/0
+          # allow any inbound traffic from other nodes in the
+          # in the ethereum chain
+          - proto: all
+            from_port: all
+            to_port: all
+            group_id: "{{ aws_parameters.security_group_name }}"
+
         rules_egress:
           # allow for outbound http
           - proto: tcp
@@ -39,7 +55,12 @@
             from_port: 443
             to_port: 443
             cidr_ip: 0.0.0.0/0
-      register: security_group
+          # allow any outbound traffic to other nodes in the
+          # in the ethereum chain
+          - proto: all
+            from_port: all
+            to_port: all
+            group_id: "{{ aws_parameters.security_group_name }}"
 
     - name: launch mining nodes
       local_action:

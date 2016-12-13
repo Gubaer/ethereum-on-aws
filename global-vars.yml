@@ -29,3 +29,6 @@ aws_parameters:
     # the image to be used for the EC2 instance. 
     # ami-0d77397e is an Ubuntu 16.04 image
     image: ami-0d77397e
+    # the name of the security group ethereum nodes are attached to
+    security_group_name: ethereum
+
