@@ -23,6 +23,25 @@
   shell: geth --datadir {{ geth_data_dir }} init genesis.json
 
 
+- name: ensure custom facts directory exists
+  become: true
+  file: >
+    path=/etc/ansible/facts.d
+    recurse=yes
+    state=directory
+
+- name: install custom facts module for enode ID
+  become: true
+  template: >
+    src=enode_id.fact.j2
+    dest=/etc/ansible/facts.d/enode_id.fact
+    mode=0755
+
+- name: reload ansible local
+  setup: filter=ansible_local
+
+
+
 
 
 

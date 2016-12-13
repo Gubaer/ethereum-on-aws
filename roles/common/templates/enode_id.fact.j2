@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# ansible fact for the enode ID of the running geth instance
+#
+
+ID=`/home/ubuntu/geth.sh --exec "admin.nodeInfo.id" console 2>/dev/null | sed 's#\"##g'`
+
+cat <<EOF
+"$ID"
+EOF
