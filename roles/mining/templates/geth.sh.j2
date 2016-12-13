@@ -11,7 +11,7 @@ geth --identity "{{ ansible_hostname }}" \
 	--ipcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
 	--autodag \
 	--networkid {{ network_id }} \
-	--nat "any" \
+	--nat "none" \
 	--etherbase {{ geth_etherbase }} \
 	--mine \
 	$*

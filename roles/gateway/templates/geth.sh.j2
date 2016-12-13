@@ -20,5 +20,5 @@ geth --identity "{{ ansible_hostname }}" \
 	--ipcpath {{ geth_data_dir }}/aws-chain.ipc \
 	--ipcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
 	--networkid {{ network_id }} \
-	--nat "any" \
+	--nat "none" \
 	$*
