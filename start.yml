@@ -49,6 +49,3 @@
       systemd:
         state: started
         name: geth
-
-
-
