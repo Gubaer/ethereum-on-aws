@@ -62,30 +62,47 @@ Add the following configuration entries to the `$HOME/.boto` configuration file 
 
 ```INI
 [Credentials]
-aws_access_key_id#<the key>
-aws_secret_access_key#<the secret>
+aws_access_key_id=<the key>
+aws_secret_access_key=<the secret>
 
 [Boto]
-ec2_region_name#eu-west-1
+ec2_region_name=eu-west-1
 ```
 
 ### Retrieve Ansible playbooks from the git repository
+```bash
+% git clone https://github.com/Gubaer/ethereum-on-aws.git
+```
 
+### Configure ansible configuration file
 
-### Configure the Ansible playbooks
+```bash
+% cp ansible.cfg.distrib ansible.cfg
+# edit ansible.cfg 
+```
 
+In `ansible.cfg` you have to configure
+* the full path to the private key file for ssh connections to the EC2 instances 
 
 ## Provision Ethereum network on Amazon EC2
 
-```shell
+```bash
 % ansible-playbook provision.yml
+```
+
+
+## Start Ethereum network on Amazon EC2
+
+```bash
+% ansible-playbook start.yml
 ```
 
 
 ## Stop Ethereum network on Amazon EC2
 
-
-## Start Ethereum network on Amazon EC2
+```bash
+% ansible-playbook stop.yml
+```
 
 
 ## Terminate Ethereum network on Amazon EC2
