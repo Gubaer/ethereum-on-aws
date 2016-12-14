@@ -7,7 +7,7 @@ This repository provides the [ansible](https://www.ansible.com/) playbooks to co
 
 ## documentation
 
-* see [documentation](https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/ethereum-on-aws.md)
+* see [documentation](https://github.com/Gubaer/ethereum-on-aws/blob/master/doc/ethereum-on-aws.md)
 
 
 
