@@ -56,7 +56,7 @@ $ sudo apt-get install ansible
 ```
 
 ### Add .boto configuration file
-Under the hood `Ansible` uses the python package `boto` to connect to the AWS management API.  
+Under the hood `ansible` uses the python package `boto` to connect to the AWS management API.  
 
 Add the following configuration entries to the `$HOME/.boto` configuration file (create it, if it doesn't exist yet).
 
@@ -70,7 +70,7 @@ ec2_region_name=eu-west-1
 ```
 
 ### Retrieve Ansible playbooks from the git repository
-```bash
+```shell
 % git clone https://github.com/Gubaer/ethereum-on-aws.git
 ```
 
