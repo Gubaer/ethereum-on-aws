@@ -4,10 +4,8 @@
 - hosts: localhost
   connection: local
   gather_facts: false
-
   vars_files: 
     - global-vars.yml
-  
   tasks:
     - name: start aws-chain instances
       local_action:
@@ -18,6 +16,13 @@
         wait: true
       with_items: 
         - "{{ groups['tag_aws_chain_node_true'] | default([]) }}"
+
+    - name: refresh EC2 cache
+      command: ./ec2.py --refresh-cache
+
+    - name: refresh in-memory EC2 cache
+      meta: refresh_inventory
+
 
 - name: gather facts on mining nodes
   hosts: tag_aws_chain_mining_node_true
@@ -30,9 +35,9 @@
     - global-vars.yml
   tasks:
     - name: create static list of peer nodes 
-      template: >
-        src=roles/gateway/templates/static-nodes.json.j2
-        dest=/home/ubuntu/data/static-nodes.json
+      template:
+        src: roles/gateway/templates/static-nodes.json.j2
+        dest: "{{ aws_parameters.data_dir }}/static-nodes.json"
 
 - name: start geth service on gateway and mining nodes
   hosts: tag_aws_chain_node_true

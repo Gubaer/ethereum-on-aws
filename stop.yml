@@ -1,13 +1,24 @@
 #
 # stop the ethereum chain
 #
+
+- name: stop geth service on gateway and mining nodes
+  hosts: tag_aws_chain_node_true
+  vars_files: 
+    - global-vars.yml
+  tasks:
+    - name: stop geth service
+      become: true
+      systemd:
+        state: stopped
+        name: geth
+
 - hosts: localhost
   connection: local
   gather_facts: false
 
   vars_files: 
-    - global-vars.yml
-  
+    - global-vars.yml  
   tasks:
     - name: stop aws-chain instances
       local_action:
