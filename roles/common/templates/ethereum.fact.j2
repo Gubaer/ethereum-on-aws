@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# ansible facts for the ethereum instance running on this node
+#
+
+ENODE_ID=`/home/ubuntu/geth.sh --exec "admin.nodeInfo.id" console 2>/dev/null | sed 's#\"##g'`
+LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+LISTENER_PORT=`/home/ubuntu/geth.sh --exec "admin.nodeInfo.ports.listener" console 2>/dev/null | sed 's#\"##g'`
+
+cat <<EOF
+{
+	"enode_id": "$ENODE_ID",
+	"enode_url": "enode://${ENODE_ID}@${LOCAL_IPV4}:${LISTENER_PORT}"
+}
+EOF

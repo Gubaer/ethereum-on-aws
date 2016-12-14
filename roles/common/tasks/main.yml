@@ -33,8 +33,8 @@
 - name: install custom facts module for enode ID
   become: true
   template: >
-    src=enode_id.fact.j2
-    dest=/etc/ansible/facts.d/enode_id.fact
+    src=ethereum.fact.j2
+    dest=/etc/ansible/facts.d/ethereum.fact
     mode=0755
 
 - name: reload ansible local
