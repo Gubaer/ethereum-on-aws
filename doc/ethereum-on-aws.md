@@ -84,28 +84,30 @@ ec2_region_name=eu-west-1
 In `ansible.cfg` you have to configure
 * the full path to the private key file for ssh connections to the EC2 instances 
 
-## Provision Ethereum network on Amazon EC2
+## Provision and control the ethereum network
+
+### Provision Ethereum network on Amazon EC2
 
 ```bash
 % ansible-playbook provision.yml
 ```
 
 
-## Start Ethereum network on Amazon EC2
+### Start Ethereum network on Amazon EC2
 
 ```bash
 % ansible-playbook start.yml
 ```
 
 
-## Stop Ethereum network on Amazon EC2
+### Stop Ethereum network on Amazon EC2
 
 ```bash
 % ansible-playbook stop.yml
 ```
 
 
-## Terminate Ethereum network on Amazon EC2
+### Terminate Ethereum network on Amazon EC2
 This will terminate all the EC2 instances and delete the attached block storage volumes.
 
 **Warning: this playbook entirely deletes the  private ethereum blockchain which is managed on these nodes!**
@@ -114,6 +116,14 @@ This will terminate all the EC2 instances and delete the attached block storage 
 % ansible-playbook terminate.yml
 ```
 
+
+## Connect to the network
+From you management and client node you can attach geth to the RPC API provided by the gateway node.
+```shell
+% geth attach http://<public-ip-of-gateway-node>:8000
+> admin.nodeInfo  // the admin module is exposed by the gateway node
+> .... 
+```
 
 
 [1]: https://portal.aws.amazon.com/billing/signup?redirect_url#https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/support
