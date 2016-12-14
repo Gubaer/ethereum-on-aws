@@ -133,6 +133,12 @@
     - global-vars.yml
 
   tasks:
+    - name: fix repo
+      # offical Ubuntu repos for eu-west-1 are sometimes very slow. This replaces the repos
+      # with standard Ubuntu repos
+      # see https://forums.aws.amazon.com/thread.jspa?messageID=643502
+      raw: sudo sed -i 's;eu-west-1.ec2.archive.ubuntu.com;eu.archive.ubuntu.com;' /etc/apt/sources.list
+
     - name: install python2
       # can't use module 'apt' or 'shell' - have to install python first
       raw: sudo apt-get update && sudo apt-get -y install python-simplejson
