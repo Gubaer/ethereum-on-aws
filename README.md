@@ -6,5 +6,6 @@ This repository provides the [ansible](https://www.ansible.com/) playbooks to co
 
 ![network diagram](https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/network.png | width=200)
 
+<img src="https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/network.png" width="50%">
 
 
