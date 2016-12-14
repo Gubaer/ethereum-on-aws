@@ -15,12 +15,12 @@
   # in the playbook for a *real* ethereum chain, obviously.
   shell: | 
     echo miner > {{ password_file }} 
-    geth --datadir {{ geth_data_dir }}  --password {{ password_file }} account new
+    geth --datadir {{ geth.data_dir }}  --password {{ password_file }} account new
     rm {{ password_file }} 
  
 - name: extract miner account 
   shell: |
-    geth --datadir {{ geth_data_dir }} account list \
+    geth --datadir {{ geth.data_dir }} account list \
     | grep "Account #0" \
     | sed -n 's/.*--\([0-9a-f]\+\)$/\1/p'
   register: extract_miner_account_result

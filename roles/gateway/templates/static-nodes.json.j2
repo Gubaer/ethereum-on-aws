@@ -1,0 +1,9 @@
+{#
+creates the list of peers for the gateway nodes. The list consists of the
+enode urls of the mining nodes.
+#}
+[
+{% for host in groups['tag_aws_chain_mining_node_true'] %}
+	"{{ hostvars[host]['ansible_local']['ethereum']['enode_url'] }}"{% if not loop.last %},{% endif %}
+{% endfor %}
+]

@@ -3,12 +3,16 @@
 #
 # number of mininig nodes to be launched
 num_mining_nodes: 2
-# the network id (a random number created using random.org)
-network_id: 90972514
-# the directory where geth saves data for the chain on an ethereum node
-geth_data_dir: /home/ubuntu/data
 
-#
+# geth specific paramters
+geth:
+    # the directory where geth saves data for the chain on an ethereum node
+    data_dir: /home/ubuntu/data
+    # the port where the geth instance is listeing for P2P traffic
+    p2p_port: 30303
+    # the network id (a random number created using random.org)
+    network_id: 90972514
+
 # Amazon Web Service specific parameters 
 aws_parameters:
     # the name of the AWS key pair which is used to access the chain nodes

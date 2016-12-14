@@ -3,9 +3,13 @@
 # ansible facts for the ethereum instance running on this node
 #
 
-ENODE_ID=`/home/ubuntu/geth.sh --exec "admin.nodeInfo.id" console 2>/dev/null | sed 's#\"##g'`
+# these two parametes don't change between restarts. The are
+# configured at installation time by the ansible playbook.
+ENODE_ID={{ ethereum_enode_id }}
+LISTENER_PORT={{ ethereum_listener_port }}
+
+# the local IPV4 addresses changes between restarts
 LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
-LISTENER_PORT=`/home/ubuntu/geth.sh --exec "admin.nodeInfo.ports.listener" console 2>/dev/null | sed 's#\"##g'`
 
 cat <<EOF
 {

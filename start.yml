@@ -18,3 +18,32 @@
         wait: true
       with_items: 
         - "{{ groups['tag_aws_chain_node_true'] | default([]) }}"
+
+- name: gather facts on mining nodes
+  hosts: tag_aws_chain_mining_node_true
+  gather_facts: true
+
+- name: install static list of peer nodes on gateway node
+  hosts: tag_aws_chain_gateway_node_true
+  gather_facts: true
+  vars_files: 
+    - global-vars.yml
+  tasks:
+    - name: create static list of peer nodes 
+      template: >
+        src=roles/gateway/templates/static-nodes.json.j2
+        dest=/home/ubuntu/data/static-nodes.json
+
+- name: start geth service on gateway and mining nodes
+  hosts: tag_aws_chain_node_true
+  vars_files: 
+    - global-vars.yml
+  tasks:
+    - name: start geth service
+      become: true
+      systemd:
+        state: started
+        name: geth
+
+
+

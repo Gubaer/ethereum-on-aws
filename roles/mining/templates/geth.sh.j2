@@ -4,13 +4,13 @@
 #
 
 geth --identity "{{ ansible_hostname }}" \
-	--datadir {{ geth_data_dir }} \
-	--port "30303" \
+	--datadir {{ geth.data_dir }} \
+	--port {{ geth.p2p_port }}\
 	--nodiscover \
-	--ipcpath {{ geth_data_dir }}/aws-chain.ipc \
+	--ipcpath {{ geth.data_dir }}/aws-chain.ipc \
 	--ipcapi "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" \
 	--autodag \
-	--networkid {{ network_id }} \
+	--networkid {{ geth.network_id }} \
 	--nat "none" \
 	--etherbase {{ geth_etherbase }} \
 	--mine \

@@ -1,0 +1,9 @@
+[Unit]
+Description=ethereum geth instance on this node
+
+[Service]
+ExecStart=/bin/sh -c '/home/ubuntu/geth.sh --verbosity 6 > /home/ubuntu/geth.log 2>&1'
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

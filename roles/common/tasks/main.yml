@@ -17,11 +17,10 @@
   copy: src=genesis.json dest=/home/ubuntu/genesis.json
 
 - name: create geth data directory
-  file: path="{{ geth_data_dir }}" state=directory
+  file: path="{{ geth.data_dir }}" state=directory
 
 - name: init chain
-  shell: geth --datadir {{ geth_data_dir }} init genesis.json
-
+  shell: geth --datadir {{ geth.data_dir }} init genesis.json
 
 - name: ensure custom facts directory exists
   become: true
@@ -30,8 +29,17 @@
     recurse=yes
     state=directory
 
-- name: install custom facts module for enode ID
+- name: extract ethereum enode ID
+  raw: geth --datadir {{ geth.data_dir }} --exec "admin.nodeInfo.id" console 2>/dev/null | sed 's#\"##g'
+  register: ethereum_enode_id_raw
+
+- debug: msg="enodeid={{ ethereum_enode_id_raw }}"
+
+- name: install custom facts module for the ethereum node
   become: true
+  vars:
+    ethereum_enode_id: "{{ ethereum_enode_id_raw.stdout_lines[0] }}"
+    ethereum_listener_port: "{{ geth.p2p_port }}"    
   template: >
     src=ethereum.fact.j2
     dest=/etc/ansible/facts.d/ethereum.fact
@@ -40,9 +48,8 @@
 - name: reload ansible local
   setup: filter=ansible_local
 
-
-
-
-
-
-
+- name: install systemd service descriptor for geth
+  become: true
+  template: >
+    src=geth.service.j2
+    dest=/etc/systemd/system/geth.service
