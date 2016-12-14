@@ -4,7 +4,7 @@ This repository provides the [ansible](https://www.ansible.com/) playbooks to co
 [Amazon Web Services](https://aws.amazon.com/) plattform.
 
 
-![network diagram](https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/network.png | width=50%)
+![network diagram](https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/network.png | width=200)
 
 
 
