@@ -37,7 +37,7 @@
             to_port: 8000
             cidr_ip: 0.0.0.0/0
           # allow any inbound traffic from other nodes in the
-          # in the ethereum chain
+          # ethereum chain
           - proto: all
             from_port: all
             to_port: all
@@ -55,7 +55,7 @@
             to_port: 443
             cidr_ip: 0.0.0.0/0
           # allow any outbound traffic to other nodes in the
-          # in the ethereum chain
+          # ethereum chain
           - proto: all
             from_port: all
             to_port: all
@@ -148,8 +148,7 @@
       raw: sudo apt-get update && sudo apt-get -y install python-simplejson
 
 - name: configure all nodes
-  hosts: tag_aws_chain_node_true
-  gather_facts: false  # python not installed yet
+  hosts: tag_aws_chain_node_true  
   vars_files: 
     - global-vars.yml
   roles:

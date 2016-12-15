@@ -3,12 +3,12 @@
 # ansible facts for the ethereum instance running on this node
 #
 
-# these two parametes don't change between restarts. The are
+# these two parametes don't change between restarts. They are
 # configured at installation time by the ansible playbook.
 ENODE_ID={{ ethereum_enode_id }}
 LISTENER_PORT={{ ethereum_listener_port }}
 
-# the local IPV4 addresses changes between restarts
+# the local IPV4 address changes between restarts
 LOCAL_IPV4=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cat <<EOF
