@@ -38,7 +38,7 @@
     - name: create static list of peer nodes 
       template:
         src: roles/gateway/templates/static-nodes.json.j2
-        dest: "{{ aws_parameters.data_dir }}/static-nodes.json"
+        dest: "{{ geth.data_dir }}/static-nodes.json"
 
 - name: start geth service on gateway and mining nodes
   hosts: tag_aws_chain_node_true
