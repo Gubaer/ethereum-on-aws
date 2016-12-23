@@ -1,5 +1,10 @@
 # Ethereum on Amazon EC2
 
+This repository provides the [ansible](https://www.ansible.com/) playbooks to configure a private [ethereum](https://www.ethereum.org/) network on the 
+[Amazon Web Services](https://aws.amazon.com/) plattform.
+
+<img src="https://github.com/Gubaer/ethereum-on-aws/raw/master/doc/network.png" width="70%">
+
 ## Prepare Amazon AWS
 
 ### Create an Amazon AWS login
@@ -37,7 +42,7 @@ to access the EC2 instances via `ssh`. You have to download the private key of t
 5. select a name, i.e. ``ethereum``
 6. save the generated private key `<your-key-pair-name>.pem` 
 
-## Prepare the managemenet node
+## Prepare the management node
 
 The following instructions assume that you have a node running Ubuntu 16.04. This could be 
 * a physical machine 
@@ -69,15 +74,15 @@ aws_secret_access_key=<the secret>
 ec2_region_name=eu-west-1
 ```
 
-### Retrieve Ansible playbooks from the git repository
+### Retrieve ansible playbooks from the GitHub repository
 ```shell
-% git clone https://github.com/Gubaer/ethereum-on-aws.git
+$ git clone https://github.com/Gubaer/ethereum-on-aws.git
 ```
 
 ### Configure ansible configuration file
 
 ```bash
-% cp ansible.cfg.distrib ansible.cfg
+$ cp ansible.cfg.distrib ansible.cfg
 # edit ansible.cfg 
 ```
 
@@ -89,21 +94,21 @@ In `ansible.cfg` you have to configure
 ### Provision Ethereum network on Amazon EC2
 
 ```bash
-% ansible-playbook provision.yml
+$ ansible-playbook provision.yml
 ```
 
 
 ### Start Ethereum network on Amazon EC2
 
 ```bash
-% ansible-playbook start.yml
+$ ansible-playbook start.yml
 ```
 
 
 ### Stop Ethereum network on Amazon EC2
 
 ```bash
-% ansible-playbook stop.yml
+$ ansible-playbook stop.yml
 ```
 
 
@@ -113,14 +118,15 @@ This will terminate all the EC2 instances and delete the attached block storage 
 **Warning: this playbook entirely deletes the  private ethereum blockchain which is managed on these nodes!**
 
 ```shell
-% ansible-playbook terminate.yml
+$ ansible-playbook terminate.yml
 ```
 
 
 ## Connect to the network
-From you management and client node you can attach geth to the RPC API provided by the gateway node.
+From your management and client node you can attach geth to the RPC API provided by the gateway node.
+
 ```shell
-% geth attach http://<public-ip-of-gateway-node>:8000
+$ geth attach http://<public-ip-of-gateway-node>:8000
 > admin.nodeInfo  // the admin module is exposed by the gateway node
 > .... 
 ```
